@@ -11,11 +11,21 @@ class SearchContainer extends React.Component {
     error: null,
   };
 
-  handleSubmit = () => {
+  handleSubmit = (event) => {
+    event.preventDefault();
     const { searchTerm } = this.state;
     if (searchTerm !== "") {
       this.searchByTerm(searchTerm);
     }
+  };
+
+  updateTerm = (event) => {
+    const {
+      target: { value },
+    } = event;
+    this.setState({
+      searchTerm: value,
+    });
   };
 
   searchByTerm = async () => {
@@ -23,15 +33,16 @@ class SearchContainer extends React.Component {
     const { searchTerm } = this.state;
     try {
       const {
-        data: { result: movieResult },
+        data: { results: movieResults },
       } = await moviesApi.search(searchTerm);
       const {
-        data: { result: showResult },
+        data: { results: tvResults },
       } = await tvApi.search(searchTerm);
-      this.setState({ movieResult, showResult });
+      this.setState({ movieResults, tvResults });
     } catch {
       this.setState({ error: "Can't find results." });
     } finally {
+      console.log(this.state);
       this.setState({ loading: false });
     }
   };
@@ -46,6 +57,7 @@ class SearchContainer extends React.Component {
         loading={loading}
         error={error}
         handleSubmit={this.handleSubmit}
+        updateTerm={this.updateTerm}
       />
     );
   }
