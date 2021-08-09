@@ -1,8 +1,10 @@
+import Screen from "./Screen";
+
 function App() {
   return (
-    <div className="App">
-      <header className="App-header"></header>
-    </div>
+    <>
+      <Screen />
+    </>
   );
 }
 
